@@ -26,7 +26,36 @@ def load_triggers():
             return json.load(f)
     except FileNotFoundError:
         return {}
+from aiogram.filters import Command
 
+# === Обработчик команды /add ===
+@dp.message(Command("add"))
+async def add_trigger(message: Message):
+    args = message.text.split(maxsplit=2)
+    
+    if len(args) < 3:
+        await message.reply("❌ Используй формат:\n/add триггер ответ")
+        return
+
+    keyword = args[1].lower()
+    response = args[2]
+
+    try:
+        with open(TRIGGERS_FILE, "r+", encoding="utf-8") as f:
+            data = json.load(f)
+            if keyword in data:
+                data[keyword].append(response)
+            else:
+                data[keyword] = [response]
+
+            f.seek(0)
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            f.truncate()
+
+        await message.reply(f"✅ Добавлено:\nКлюч: <b>{keyword}</b>\nОтвет: <i>{response}</i>")
+
+    except Exception as e:
+        await message.reply(f"❌ Ошибка при сохранении: {e}")
 # === Обработчик всех сообщений ===
 @dp.message()
 async def handle_message(message: Message):
@@ -38,7 +67,7 @@ async def handle_message(message: Message):
 
     for keyword, responses in triggers.items():
         if re.search(rf"\b{re.escape(keyword)}\b", text):
-            await message.reply(f"Филипп Киркорян: {responses[0]}")
+            await message.reply(f"Федор: {responses[0]}")
             break
 
 # === Точка входа ===
