@@ -67,7 +67,7 @@ async def handle_message(message: Message):
 
     for keyword, responses in triggers.items():
         if re.search(rf"\b{re.escape(keyword)}\b", text):
-            await message.reply(f"Федор: {responses[0]}")
+            await message.reply(f"Филипп Киркорян: {responses[0]}")
             break
 
 # === Точка входа ===
