@@ -3,19 +3,20 @@
 import asyncio
 import json
 import re
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.types import Message
-from aiogram.client.default import DefaultBotProperties  # 💡 новый импорт
+from aiogram.client.default import DefaultBotProperties
+from aiogram.filters import Command
 
 # === Настройки ===
-BOT_TOKEN = "8292751440:AAG89FGJxkcVQ3tHWBPlTbDyBSRnr-IXpcc"
+BOT_TOKEN = "ВСТАВЬ_СВОЙ_ТОКЕН"
 TRIGGERS_FILE = "triggers.json"
 
-# === Инициализация бота с новым способом задания parse_mode ===
+# === Инициализация бота с parse_mode
 bot = Bot(
     token=BOT_TOKEN,
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML)  # 💡 вот так теперь
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 dp = Dispatcher()
 
@@ -26,7 +27,6 @@ def load_triggers():
             return json.load(f)
     except FileNotFoundError:
         return {}
-from aiogram.filters import Command
 
 # === Обработчик команды /add ===
 @dp.message(Command("add"))
@@ -56,6 +56,7 @@ async def add_trigger(message: Message):
 
     except Exception as e:
         await message.reply(f"❌ Ошибка при сохранении: {e}")
+
 # === Обработчик всех сообщений ===
 @dp.message()
 async def handle_message(message: Message):
@@ -67,7 +68,7 @@ async def handle_message(message: Message):
 
     for keyword, responses in triggers.items():
         if re.search(rf"\b{re.escape(keyword)}\b", text):
-            await message.reply(f"Филипп Киркоряныч: {responses[0]}")
+            await message.reply(responses[0])
             break
 
 # === Точка входа ===
