@@ -10,7 +10,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import Command
 
 # === Настройки ===
-BOT_TOKEN = "ВСТАВЬ_СВОЙ_ТОКЕН"
+BOT_TOKEN = "8292751440:AAG89FGJxkcVQ3tHWBPlTbDyBSRnr-IXpcc"
 TRIGGERS_FILE = "triggers.json"
 
 # === Инициализация бота с parse_mode
